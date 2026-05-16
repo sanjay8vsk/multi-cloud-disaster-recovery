@@ -1,5 +1,7 @@
 const { recordFailover } = require("./logger");
 
+const { HEALTH_CHECK_INTERVAL } = require("../config/constants");
+
 let activeServer = null;
 
 function setActiveServer(server) {

@@ -1,25 +1,34 @@
 const express = require("express");
 const cors = require("cors");
 
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
 const azure = require("./clouds/azure");
 const aws = require("./clouds/aws");
 
 const { startMonitoring } = require("./services/healthMonitor");
 const { getActiveServer, setActiveServer } = require("./services/failover");
 
-// ✅ ADD THIS
-const { addLog, incrementRequests, getLogs, getMetrics } = require("./services/logger");
+const {
+  addLog,
+  incrementRequests,
+  getLogs,
+  getMetrics
+} = require("./services/logger");
 
-const app = express();
-app.use(cors());
+const { PORT } = require("./config/constants");
 
+// Start with Azure as active
+setActiveServer(azure);
 
-setActiveServer(azure); // Start with Azure as active
 // Start monitoring
 startMonitoring();
 
 
-// ✅ HEALTH ROUTE
+// HEALTH ROUTE
 app.get("/health", (req, res) => {
   res.json({
     azure: azure.health(),
@@ -29,21 +38,21 @@ app.get("/health", (req, res) => {
 });
 
 
-// ✅ FAIL + RECOVER
+// FAIL AZURE
 app.post("/fail/azure", (req, res) => {
   azure.simulateFailure();
   res.json({ message: "Azure failed" });
 });
 
+
+// RECOVER AZURE
 app.post("/recover/azure", (req, res) => {
   azure.recover();
   res.json({ message: "Azure recovered" });
 });
 
 
-// 🔥 UPDATE THIS ROUTE
-
-
+// HANDLE REQUESTS
 app.get("/request", (req, res) => {
   const active = getActiveServer();
 
@@ -55,22 +64,24 @@ app.get("/request", (req, res) => {
   addLog(`Request served by ${active.name}`);
 
   const response = active.handleRequest();
+
   res.json(response);
 });
 
 
-// 🔥 ADD THIS (LOGS API)
+// LOGS API
 app.get("/logs", (req, res) => {
   res.json(getLogs());
 });
 
 
-// 🔥 ADD THIS (METRICS API)
+// METRICS API
 app.get("/metrics", (req, res) => {
   res.json(getMetrics());
 });
 
 
-app.listen(5001, () => {
-  console.log("Server running on port 5001");
+// START SERVER
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
