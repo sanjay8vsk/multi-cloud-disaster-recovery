@@ -6,7 +6,7 @@ function App() {
   const [metrics, setMetrics] = useState(null);
   const [logs, setLogs] = useState([]);
 
-  const API = "http://127.0.0.1:3000";
+  const API = "https://multi-cloud-backend-x185.onrender.com";
 
   const fetchData = async () => {
     try {
