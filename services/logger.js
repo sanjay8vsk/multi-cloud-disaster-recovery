@@ -12,7 +12,7 @@ let metrics = {
   history: []
 };
 
-// 🟢 Add log entry
+// Add log entry
 function addLog(message) {
   logs.push({
     message,
@@ -20,7 +20,7 @@ function addLog(message) {
   });
 }
 
-// 🟢 Increment request count
+// Increment request count
 function incrementRequests(serverName) {
   metrics.totalRequests++;
 
@@ -31,7 +31,7 @@ function incrementRequests(serverName) {
   metrics.perServer[serverName]++;
 }
 
-// 🟢 Record failover event
+// Record failover event
 function recordFailover(from, to) {
   metrics.failovers++;
 
@@ -47,17 +47,17 @@ function recordFailover(from, to) {
   addLog(`Failover: ${from} → ${to}`);
 }
 
-// 🟢 Get logs
+// Get logs
 function getLogs() {
   return logs;
 }
 
-// 🟢 Get metrics
+// Get metrics
 function getMetrics() {
   return metrics;
 }
 
-// 🟢 Export everything
+// Export everything
 module.exports = {
   addLog,
   incrementRequests,
