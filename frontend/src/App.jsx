@@ -44,6 +44,16 @@ function App() {
     fetchData();
   };
 
+  const failAWS = async () => {
+    await axios.post(`${API}/fail/aws`);
+    fetchData();
+  };
+
+  const recoverAWS = async () => {
+    await axios.post(`${API}/recover/aws`);
+    fetchData();
+  };
+
   const generateRequest = async () => {
     await axios.get(`${API}/request`);
     fetchData();
@@ -151,6 +161,19 @@ function App() {
             className="bg-green-500 hover:bg-green-600 px-6 py-3 rounded-xl font-semibold transition"
           >
             Recover Azure
+          </button>
+          <button
+          onClick={failAWS}
+          className="bg-orange-500 hover:bg-orange-600 px-6 py-3 rounded-xl font-semibold transition"
+          >
+          Simulate AWS Failure
+          </button>
+
+          <button
+            onClick={recoverAWS}
+            className="bg-yellow-500 hover:bg-yellow-600 px-6 py-3 rounded-xl font-semibold transition"
+          >
+            Recover AWS
           </button>
         </div>
 
