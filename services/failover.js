@@ -1,16 +1,17 @@
 const { recordFailover } = require("./logger");
 
-const { HEALTH_CHECK_INTERVAL } = require("../config/constants");
-
 let activeServer = null;
 
 function setActiveServer(server) {
   if (!activeServer || activeServer.name !== server.name) {
-    const previous = activeServer ? activeServer.name : "None";
+
+    const previous = activeServer
+      ? activeServer.name
+      : "None";
 
     console.log(`Switching to ${server.name}`);
 
-    recordFailover(previous?.name || "None", server.name);
+    recordFailover(previous, server.name);
 
     activeServer = server;
   }

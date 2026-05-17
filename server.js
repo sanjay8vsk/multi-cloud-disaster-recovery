@@ -51,6 +51,19 @@ app.post("/recover/azure", (req, res) => {
   res.json({ message: "Azure recovered" });
 });
 
+// FAIL AWS
+app.post("/fail/aws", (req, res) => {
+  aws.simulateFailure();
+  res.json({ message: "AWS failed" });
+});
+
+
+// RECOVER AWS
+app.post("/recover/aws", (req, res) => {
+  aws.recover();
+  res.json({ message: "AWS recovered" });
+});
+
 
 // HANDLE REQUESTS
 app.get("/request", (req, res) => {
